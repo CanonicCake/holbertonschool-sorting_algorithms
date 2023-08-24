@@ -1,7 +1,7 @@
 #include "sort.h"
 
 /**
- * _swap - swaps arrays, highs and lows
+ * swap - swaps arrays, highs and lows
  * @array: array
  * @f: first
  * @s: second
@@ -31,7 +31,29 @@ void quick_sort(int *array, size_t size)
 	if (!array || size < 2)
 		return;
 
-	partition(array, 0, (int)size - 1, size);
+	quick_sort_help(array, 0, size - 1, size);
+}
+
+/**
+ * quick_sort_help - helps quick sort
+ * @array: array
+ * @low: low
+ * @high: high
+ * @size: size
+ *
+ * Return: void
+ */
+
+void quick_sort_help(int *array, int low, int high, size_t size)
+{
+	int pivot;
+
+	if (low < high)
+	{
+		pivot = partition(array, low, high, size);
+		quick_sort_help(array, low, pivot - 1, size);
+		quick_sort_help(array, pivot + 1, high, size);
+	}
 }
 
 /**
@@ -41,36 +63,31 @@ void quick_sort(int *array, size_t size)
  * @low: low
  * @size: size
  *
- * Return: i on success
+ * Return: partitioned array
  */
 
-void partition(int *array, int high, int low, size_t size)
+int partition(int *array, int high, int low, size_t size)
 {
 	int j = low;
 	int i;
 	int pivot = array[high];
 
-	if (low >= high)
-		return;
-
-	for(i = low; i < high; i++)
+	for(i = low - 1; i < high; i++)
 	{
 		if (array[i] <= pivot)
 		{
-			if (i != j)
+			j++;
+			if (array[i] != array[j])
 			{
 				swap(array, i, j);
 				print_array(array, size);
 			}
-			j++;
 		}
 	}
-	if (j != high)
+	if (array[i + 1] != array[high])
 	{
 		swap(array, high, j);
 		print_array(array, size);
 	}
-	partition(array, low, j - 1, size);
-	partition(array, j + 1, high, size);
-
+	return (i + 1);
 }
