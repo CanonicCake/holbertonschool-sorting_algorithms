@@ -31,7 +31,7 @@ void quick_sort(int *array, size_t size)
 	if (!array || size < 2)
 		return;
 
-	partition(array, 0, size - 1, size);
+	partition(array, 0, (int)size - 1, size);
 }
 
 /**
